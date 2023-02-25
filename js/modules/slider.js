@@ -6,20 +6,25 @@ function slider({
     field,
     container
 }) {
-    const sliderWrapper = document.querySelector(wrapper),
+    const sliderWrapper =  document.querySelector(wrapper),
         slides = document.querySelectorAll(slide),
         sliderInner = document.querySelector(field),
         sliderContainer = document.querySelector(container),
-        width = window.getComputedStyle(sliderContainer).width;
+        width = window.getComputedStyle(sliderContainer).height;
 
 
     let current = 0;
     let offset = 0;
     let total = slides.length;
 
-    sliderInner.style.width = 100 * slides.length + '%';
+
+    
+    sliderInner.style = "flex-direction: column";
+    sliderInner.style.height = 100 * slides.length + '%';
     sliderInner.style.display = 'flex';
+    
     sliderInner.style.transition = '0.5s all';
+    
     sliderWrapper.style.overflow = 'hidden';
 
     const idicators = document.createElement("ol");
@@ -53,7 +58,7 @@ function slider({
             current = total-1
         }
 
-        sliderInner.style.transform = `translateX(-${offset}px)`;
+        sliderInner.style.transform = `translateY(-${offset}px)`;
         activateDots(idicators);
     }
 
@@ -83,7 +88,7 @@ function slider({
 
     sliderInner.addEventListener('wheel', (e) => {
         disableScroll();
-        if (e.deltaY > 0)
+        if (e.deltaY < 0)
             change(-1);
         else
             change(1);
@@ -92,8 +97,6 @@ function slider({
     sliderInner.addEventListener('mouseleave', (e)=>{
         enableScroll();
     })
-
-
 
 }
 
