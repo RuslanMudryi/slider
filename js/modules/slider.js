@@ -1,3 +1,5 @@
+import { enableScroll,disableScroll } from "../services/scrollControll";
+
 function slider({
     wrapper,
     slide,
@@ -35,17 +37,20 @@ function slider({
     activateDots(idicators);
 
     function change(i) {
-        current = current + i < 0 ? total : current + i > total ? 0 : current + i;
+        
+        
         let widthInt = +width.slice(0, -2);
         console.log(widthInt);
         offset += i * widthInt;
+        current += i;
 
         if (offset > widthInt * (slides.length - 1)) {
             offset = 0;
+            current = 0;
 
         } else if (offset < 0) {
             offset = widthInt * (slides.length - 1);
-
+            current = total-1
         }
 
         sliderInner.style.transform = `translateX(-${offset}px)`;
@@ -72,12 +77,22 @@ function slider({
 
 
 
-    console.log(slides);
-
-
-    sliderInner.addEventListener('mousedown',(e)=>{
-        change(-1);
+    sliderInner.addEventListener('hover', (e) => {
+        console.log('d');
     })
+
+    sliderInner.addEventListener('wheel', (e) => {
+        disableScroll();
+        if (e.deltaY > 0)
+            change(-1);
+        else
+            change(1);
+    })
+
+    sliderInner.addEventListener('mouseleave', (e)=>{
+        enableScroll();
+    })
+
 
 
 }
